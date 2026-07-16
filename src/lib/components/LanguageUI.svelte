@@ -1,10 +1,11 @@
 <script lang="ts">
-	export let language: string;
-	export let version: string;
+	import type { LanguageUIProps } from '$lib/components/ComponentPropsTypes';
+
+	let { language, version }: LanguageUIProps = $props()
 </script>
 
 <div
-	class="language-tag inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800"
+	class="inline-flex items-center   px-2.5 py-0.5 text-xs font-medium text-blue-800"
 >
 	<span class="language">{language}</span>
 	<span class="version">{version}</span>

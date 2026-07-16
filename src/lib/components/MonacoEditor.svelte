@@ -1,12 +1,15 @@
 <script lang="ts">
-    import { onMount, onDestroy } from 'svelte';
+    import type { MonacoEditorProps } from '$lib/components/ComponentPropsTypes';
+		import { onMount, onDestroy } from 'svelte';
 
-    export let value = '';
-    export let language = 'python';
-    export let theme = 'vs-dark';
-    export let readOnly = false;
-    export let height = '60vh';
-    export let onChange: (value: string) => void = () => {};
+    let {
+			value = '',
+			language = 'python',
+			theme = 'vs-dark',
+			readOnly = false,
+			height = '60vh',
+			onChange = () => {}
+		}: MonacoEditorProps = $props()
 
     let editor: any;
     let editorContainer: HTMLElement;

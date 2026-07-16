@@ -1,29 +1,31 @@
 <!-- NodeNavigation.svelte -->
 <script lang="ts">
+	import type { NodeNavigationProps } from '$lib/components/ComponentPropsTypes';
+	import NodeNavigation from '$lib/components/NodeNavigation.svelte';
 	import { writable } from 'svelte/store';
 	import type { LionWebJsonChunk, LionWebJsonNode } from '@lionweb/json';
 	import { getQualifiedNodeRepresentation, splitQualifiedName } from '$lib/utils/noderendering';
 
-	export let chunk: LionWebJsonChunk;
-	export let selectedNodeId: string | null = null;
-	export let onNodeSelect: (nodeId: string) => void;
+	let { chunk, selectedNodeId = null, onNodeSelect }: NodeNavigationProps = $props()
+	
 	const expandedLanguages = writable<Set<string>>(new Set());
 	const expandedTypes = writable<Set<string>>(new Set());
 
 	// Group nodes by language and type
-	$: nodesByType = chunk.nodes.reduce((acc, node) => {
-		const language = node.classifier?.language || 'Unknown';
-		const type = node.classifier?.key || 'Unknown';
-
-		if (!acc[language]) {
-			acc[language] = {};
-		}
-		if (!acc[language][type]) {
-			acc[language][type] = [];
-		}
-		acc[language][type].push(node);
-		return acc;
-	}, {} as Record<string, Record<string, LionWebJsonNode[]>>);
+	let nodesByType = $state( chunk.nodes.reduce((acc, node) => {
+			const language = node.classifier?.language || 'Unknown';
+			const type = node.classifier?.key || 'Unknown';
+	
+			if (!acc[language]) {
+				acc[language] = {};
+			}
+			if (!acc[language][type]) {
+				acc[language][type] = [];
+			}
+			acc[language][type].push(node);
+			return acc;
+		}, {} as Record<string, Record<string, LionWebJsonNode[]>>)
+	);
 
 	function handleNodeClick(nodeId: string) {
 		onNodeSelect(nodeId);
@@ -63,7 +65,7 @@
 	<div class="flex-1 overflow-y-auto bg-white">
 		<div class="p-4 space-y-6">
 			{#each Object.entries(nodesByType).sort(([langA], [langB]) => langA.localeCompare(langB)) as [language, types]}
-				<div class="border rounded-lg overflow-hidden">
+				<div class="border rounded-lg ">
 					<button
 						class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100"
 						on:click={() => toggleLanguage(language)}

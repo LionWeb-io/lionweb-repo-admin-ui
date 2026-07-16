@@ -1,20 +1,20 @@
 <script lang="ts">
 	import type { RepositoryConfiguration } from '@lionweb/server-shared';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { getRepositories } from '$lib/services/repository';
 	import { onMount } from 'svelte';
 
-	let repositories: RepositoryConfiguration[] = [];
-	let isOpen = false;
-	let selected: RepositoryConfiguration | null = null;
+	let repositories: RepositoryConfiguration[] = $state([]);
+	let isOpen = $state(false);
+	let selected: RepositoryConfiguration | null = $state(null);
 
 	onMount(async () => {
 		try {
 			const response = await getRepositories();
 			if (response.success) {
 				repositories = response.repositories;
-				selected = repositories.find(r => r.name === $page.params.repository) || repositories[0];
+				selected = repositories.find(r => r.name === page.params.repository) || repositories[0];
 			}
 		} catch (e) {
 			console.error('Error loading repositories:', e);

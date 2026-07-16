@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
 </script>
 
 <a 
     href="/playground" 
-    class="flex items-center justify-center p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:shadow-md {($page.url.pathname === '/playground' ? 'bg-indigo-50 shadow-md' : '')}"
+    class="flex items-center justify-center p-3 rounded-lg transition-all duration-300 hover:bg-indigo-50 hover:shadow-md {(page.url.pathname === '/playground' ? 'bg-indigo-50 shadow-md' : '')}"
     title="Python Playground"
 >
     <svg 

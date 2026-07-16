@@ -1,6 +1,7 @@
 <script lang="ts">
-	export let show: boolean;
-	export let progress: { current: number; total: number };
+	import type { UploadProgressProps } from '$lib/components/modals/ModalProps';
+
+	let { show, progress }: UploadProgressProps = $props()
 </script>
 
 {#if show}

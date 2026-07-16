@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { listPartitionsIDs, loadPartitionNames } from '$lib/services/repository';
 	import { onMount } from 'svelte';
 
 	let partitions: Array<{ id: string; name?: string }> = [];
-	let isOpen = false;
-	let selected: { id: string; name?: string } | null = null;
+	let isOpen = $state(false);
+	let selected: { id: string; name?: string } | null = $state(null);
 	let searchQuery = '';
 
 	onMount(async () => {
 		try {
-			const repositoryName = $page.params.repository;
+			const repositoryName = page.params.repository;
 			if (!repositoryName) return;
 
 			const partitionIDs = await listPartitionsIDs(repositoryName);
@@ -25,7 +25,7 @@
 			}));
 
 			// Set selected partition based on current URL
-			const currentPartitionId = $page.params.id?.replace('node-', '');
+			const currentPartitionId = page.params.id?.replace('node-', '');
 			if (currentPartitionId) {
 				selected = partitions.find(p => p.id === currentPartitionId) || null;
 			}
@@ -41,10 +41,10 @@
 	function selectOption(partition: { id: string; name?: string }) {
 		selected = partition;
 		isOpen = false;
-		goto(`/repository/${$page.params.repository}/node-${partition.id}`);
+		goto(`/repository/${page.params.repository}/node-${partition.id}`);
 	}
 
-	$: filteredPartitions = partitions
+	let filteredPartitions = $derived(partitions
 		.filter(p => {
 			const searchLower = searchQuery.toLowerCase();
 			return (p.name?.toLowerCase().includes(searchLower) || p.id.toLowerCase().includes(searchLower));
@@ -53,7 +53,7 @@
 			const nameA = a.name || a.id;
 			const nameB = b.name || b.id;
 			return nameA.localeCompare(nameB);
-		});
+		}));
 </script>
 
 <div class="custom-select">

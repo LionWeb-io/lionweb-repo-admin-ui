@@ -1,11 +1,9 @@
 <script lang="ts">
-	import type { LionWebJsonNode } from '@lionweb/json';
-
-	export let node: LionWebJsonNode;
-	export let handleNodeClick: (id: string) => void;
-
+	import type { NodeDetailsProps } from '$lib/components/ComponentPropsTypes';
 	import MetaPointerUI from './MetaPointerUI.svelte';
 	import { getReferenceValues, renderPropertyValue } from '$lib/utils/noderendering';
+
+	let { node, handleNodeClick } : NodeDetailsProps = $props()
 </script>
 
 {#if node.properties?.length || node.references?.length}

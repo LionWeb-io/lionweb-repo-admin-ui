@@ -1,14 +1,17 @@
 <script lang="ts">
-	export let language: string;
-	export let key: string;
-	export let version: string;
-
+	import type { MetaPointerUIProps } from '$lib/components/ComponentPropsTypes';
 	import LanguageUI from '$lib/components/LanguageUI.svelte';
+
+	let { language, key, version }: MetaPointerUIProps = $props()
 </script>
 
-<div class="meta-pointer">
-	<LanguageUI {language} {version} />
-	<div class="key">{key}</div>
+<div class="meta-pointer ">
+	<details name="exclusive" class="text-nowrap rounded-full bg-blue-100" on:toggle={(ev) => {console.log("!!!"); ev.preventDefault(); ev.stopPropagation()}}>
+		<summary on:toggle={(ev) => {console.log("!!!"); ev.preventDefault(); ev.stopPropagation()}}>
+			<span class="key text-xs font-medium text-blue-800">{key}</span>
+		</summary>
+		<LanguageUI {language} {version} />
+	</details>
 </div>
 
 <style>
@@ -20,9 +23,56 @@
 	}
 
 	.key {
-		color: #333;
-		font-size: 1rem;
-		font-weight: 300;
-		padding: 0.15rem 0.25rem;
+			overflow: hidden;
+		padding: 0.05rem 0.25rem;
 	}
+  details {
+      overflow: hidden;
+  }
+
+  details:first-of-type {
+      /*border-top: solid #ADADAD 2px;*/
+  }
+
+  details[open] {
+      /*background-color: #eee;*/
+			corner-shape: round;
+      border: solid #ADADAD 2px;
+			border-radius: 8px;
+      /*border-left: 3px solid #0000CD;*/
+  }
+
+  summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.15rem 0.35rem 0.15rem 0.15rem;
+      font-weight: bold;
+      font-size: 20px;
+      cursor: pointer;
+  }
+
+  summary::after {
+      /*background: url('data:images/arrow.svg') no-repeat;*/
+			content: '';
+      border: solid #0000CD;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 4px;
+      transition: 0.3s;
+      transform: rotate(45deg);
+  }
+
+  details[open] > summary::after {
+      transform: rotate(-135deg);
+  }
+
+  summary::-webkit-details-marker {
+      display: none;
+  }
+
+  p {
+      padding: 5px 20px;
+  }
+	
 </style>

@@ -1,27 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { loadPartition } from '$lib/services/repository';
 	import NodeTree from '$lib/components/NodeTree.svelte';
 	import LanguageUI from '$lib/components/LanguageUI.svelte';
 	import type { LionWebJsonChunk } from '@lionweb/server-client';
 	import NodeNavigation from '$lib/components/NodeNavigation.svelte';
 	import { tick } from 'svelte';
-
-	let repositoryName = $page.params.repository;
-	let nodeId = $page.params.id;
-	let loading = false;
+  import { SvelteSet } from "svelte/reactivity"
+	
+	let repositoryName = $state(page.params.repository);
+	let nodeId = $state(page.params.id);
+	let loading = $state(false);
 	let error: string | null = null;
-	let expandedNodes = new Set<string>();
-	let partitionData: LionWebJsonChunk | null = null;
-	let selectedNodeId: string | null = null;
+	let expandedNodes = $state(new SvelteSet<string>());
+	let partitionData: LionWebJsonChunk | null = $state(null);
+	let selectedNodeId: string | null = $state(null);
 
-	// React to URL changes
-	$: {
-		repositoryName = $page.params.repository;
-		nodeId = $page.params.id;
 		loadData();
-	}
 
 	async function loadData() {
 		try {
@@ -49,12 +45,10 @@
 		partitionData.nodes.forEach(node => {
 			expandedNodes.add(node.id);
 		});
-		expandedNodes = expandedNodes; // Trigger reactivity
 	}
 
 	function handleCollapseAll() {
 		expandedNodes.clear();
-		expandedNodes = expandedNodes; // Trigger reactivity
 	}
 
 	async function handleNodeSelect(nodeId: string) {
@@ -73,7 +67,6 @@
 		ancestors.reverse().forEach(ancestorId => {
 			expandedNodes.add(ancestorId);
 		});
-		expandedNodes = expandedNodes; // Trigger reactivity
 
 		// Wait for the DOM to update
 		await tick();
@@ -170,7 +163,7 @@
 					<div class="bg-gray-50 rounded-lg p-4 max-h-[calc(100vh-300px)] overflow-y-auto" id="node-tree-container">
 						<NodeTree
 							chunk={partitionData}
-							bind:expandedNodes
+							expandedNodes={expandedNodes}
 							on:nodeClick={handleNodeClick}
 							selectedNodeId={selectedNodeId}
 						/>

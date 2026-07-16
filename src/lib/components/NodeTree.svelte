@@ -1,5 +1,6 @@
 <!-- NodeTree.svelte -->
 <script lang="ts">
+	import type { NodeTreeProps } from '$lib/components/ComponentPropsTypes';
 	import type {
 		SerializationChunk,
 		SerializedNode,
@@ -11,11 +12,14 @@
 	import NodeDetails from '$lib/components/NodeDetails.svelte';
 	import type { LionWebJsonNode, LionWebJsonChunk } from '@lionweb/json';
 
-	export let chunk: LionWebJsonChunk;
-	export let expandedNodes: Set<string> = new Set();
-	export let level: number = 0;
-	export let nodeId: string | null = null;
-	export let selectedNodeId: string | null = null;
+	let {
+		chunk,
+		expandedNodes,
+		level = 0,
+		nodeId = null,
+		selectedNodeId = null
+	}: NodeTreeProps = $props()
+	
 	let allContainments = chunk.nodes
 		.map((container: LionWebJsonNode) => container.containments)
 		.flat();
@@ -42,7 +46,6 @@
 		} else {
 			expandedNodes.add(id);
 		}
-		expandedNodes = expandedNodes; // Trigger reactivity
 	}
 
 	function getChildNodes(id: string): LionWebJsonNode[] {
@@ -116,14 +119,15 @@
 		return siblingAnnotations?.at(0) === node.id;
 	}
 
-	$: nodes =
+	let nodes: LionWebJsonNode[] = $derived(
 		nodeId === null
 			? chunk?.nodes?.filter((node) => !node.parent) || [] // Root nodes
-			: getChildNodes(nodeId);
+			: getChildNodes(nodeId)
+	);
 </script>
 
 <div class="space-y-2 overflow-y-auto">
-	{#each nodes as node:LionWebJsonNode}
+	{#each nodes as node}
 		<div
 			class="rounded p-2 {selectedNodeId === node.id ? 'highlight-node' : ''}"
 			style="margin-left: {level * 20}px; /*background-color: {getNodeColor(node.id)}*/"
@@ -162,9 +166,9 @@
 								</p>
 								<div class="classifier flex-shrink-0">
 									<MetaPointerUI
-										language={node.classifier?.language}
-										key={node.classifier?.key}
-										version={node.classifier?.version}
+										language={node.classifier.language}
+										key={node.classifier.key}
+										version={node.classifier.version}
 									/>
 								</div>
 							</div>
@@ -177,9 +181,9 @@
 								<p class="font-medium break-all min-w-0 node-id">🔹 {node.id || 'Unknown'}</p>
 								<div class="classifier flex-shrink-0">
 									<MetaPointerUI
-										language={node.classifier?.language}
-										key={node.classifier?.key}
-										version={node.classifier?.version}
+										language={node.classifier.language}
+										key={node.classifier.key}
+										version={node.classifier.version}
 									/>
 								</div>
 							</div>

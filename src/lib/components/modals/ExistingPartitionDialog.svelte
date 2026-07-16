@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let show: boolean;
-	export let partitionId: string | null;
-	export let onAction: (action: 'skip' | 'replace', applyAll: boolean) => void;
+	import type { ExistingPartitionProps } from '$lib/components/modals/ModalProps';
+
+	let { show, partitionId, onAction}: ExistingPartitionProps = $props()
 
 	let applyToAll = false;
 </script>

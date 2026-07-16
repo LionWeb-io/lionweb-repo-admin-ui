@@ -8,28 +8,28 @@
 	import UploadProgressModal from '$lib/components/modals/UploadProgressModal.svelte';
 	import ExistingPartitionDialog from '$lib/components/modals/ExistingPartitionDialog.svelte';
 
-	let repositories: RepositoryConfiguration[] = [];
-	let loading = true;
-	let error: string | null = null;
-	let showCreateModal = false;
-	let showDeleteConfirm = false;
-	let repositoryToDelete: RepositoryConfiguration | null = null;
-	let createError: string | null = null;
+	let repositories: RepositoryConfiguration[] = $state([]);
+	let loading = $state(true);
+	let error: string | null = $state(null);
+	let showCreateModal = $state(false);
+	let showDeleteConfirm = $state(false);
+	let repositoryToDelete: RepositoryConfiguration | null = $state(null);
+	let createError: string | null = $state(null);
 	let dragActiveRepository: string | null = null;
-	let showDownloadProgress = false;
-	let downloadProgress = { current: 0, total: 0 };
-	let showUploadProgress = false;
-	let uploadProgress = { current: 0, total: 0 };
-	let showExistingPartitionDialog = false;
-	let currentPartitionId: string | null = null;
-	let existingPartitionResolver: ((value: 'skip' | 'replace') => void) | null = null;
-	let uploadAction: 'skip' | 'replace' | null = null;
-	let applyToAll = false;
-	let partitionCounts: { [key: string]: number | null } = {};
-	let loadingPartitionCounts: { [key: string]: boolean } = {};
+	let showDownloadProgress = $state(false);
+	let downloadProgress = $state({ current: 0, total: 0 });
+	let showUploadProgress = $state(false);
+	let uploadProgress = $state({ current: 0, total: 0 });
+	let showExistingPartitionDialog = $state(false);
+	let currentPartitionId: string | null = $state(null);
+	let existingPartitionResolver: ((value: 'skip' | 'replace') => void) | null = $state(null);
+	let uploadAction: 'skip' | 'replace' | null =$state( null);
+	let applyToAll = $state(false);
+	let partitionCounts: { [key: string]: number | null } = $state({});
+	let loadingPartitionCounts: { [key: string]: boolean } = $state({});
 
 	// Add drag counter to handle nested elements
-	let dragCounters: { [key: string]: number } = {};
+	let dragCounters: { [key: string]: number } = $state({});
 
 	onMount(async () => {
 		await loadRepositories();
@@ -272,7 +272,7 @@
 	}
 </script>
 
-<div class="relative min-h-screen">
+<div class=" min-h-screen">
 	<!-- Content -->
 	<div class="rounded-lg bg-white shadow">
 		<div class="px-4 py-5 sm:p-6">

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
-	import type { SerializationChunk } from '@lionweb/core';
+	import { page } from '$app/state';
 	import {
 		listPartitionsIDs,
 		createPartition,
@@ -16,11 +15,11 @@
 	import type { RepositoryConfiguration } from '@lionweb/server-shared';
 	import { goto } from '$app/navigation';
 
-	let repositoryName = $page.params.repository;
-	let partitions: Array<{ id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk }> = [];
-	let loading = false;
-	let error: string | null = null;
-	let dragActive = false;
+	let repositoryName = $state(page.params.repository);
+	let partitions: Array<{ id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk }> = $state([]);
+	let loading = $state(false);
+	let error: string | null = $state(null);
+	let dragActive = $state(false);
 
 	async function loadPartitions() {
 		if (!repositoryName) return;
@@ -98,6 +97,7 @@
 				</div>
 			{:else}
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+					Partitions found:
 					{#each partitions.sort((a, b) => a.id.localeCompare(b.id)) as partition}
 						<div 
 							class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow hover:shadow-md transition-shadow duration-200 cursor-pointer"
