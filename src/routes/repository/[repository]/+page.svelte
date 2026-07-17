@@ -15,17 +15,16 @@
 	import { SvelteSet } from 'svelte/reactivity';
 
 	type ViewMode = 'chronological' | 'grouped' | 'alphabetical';
-	let viewMode: ViewMode = 'chronological';
+	let viewMode: ViewMode = $state('chronological');
 	let collapsedGroups = $state(new SvelteSet<string>());
 
-	let repositoryName = $state(page.params.repository);
+	let repositoryName = $derived(page.params.repository);
 	type PartitionEntry = { id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk; metapointer?: LionWebJsonMetaPointer };
 	let partitions: Array<PartitionEntry> = $state([]);
 	let loading = $state(false);
 	let error: string | null = $state(null);
 	let dragActive = $state(false);
 
-	repositoryName = page.params.repository;
 	loadPartitions();
 
 	// Compute organized partitions based on view mode
@@ -197,6 +196,12 @@
 	onMount(async () => {
 		await loadPartitions();
 	});
+	
+	// Reload partitions if repo changes
+	$effect( () => {
+		const newrepo = repositoryName
+		loadPartitions()
+	})
 </script>
 
 <div class="relative min-h-screen">
@@ -209,14 +214,15 @@
 	<div class="rounded-lg bg-white shadow mb-4">
 		<div class="px-4 py-5 sm:p-6">
 			<div
+				role="region"
 				class="rounded-lg border-2 border-dashed p-8 text-center transition-colors duration-200 ease-in-out"
 				class:border-indigo-600={dragActive}
 				class:border-gray-300={!dragActive}
 				class:bg-indigo-50={dragActive}
-				on:dragenter={handleDragEnter}
-				on:dragleave={handleDragLeave}
-				on:dragover={handleDragOver}
-				on:drop={handleDrop}
+				ondragenter={handleDragEnter}
+				ondragleave={handleDragLeave}
+				ondragover={handleDragOver}
+				ondrop={handleDrop}
 			>
 				<div class="text-gray-600">
 					<div  class="inline-flex justify-center items-center"><ImageUpIcon/></div>
@@ -266,7 +272,7 @@
 				{#if organizedPartitions.type === 'list'}
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 						{#each organizedPartitions.items as partition}
-							<PartitionCard {partition} onClick={handleLoadPartition} on:deleted={loadPartitions} />
+							<PartitionCard {partition} onClick={handleLoadPartition} deleted={loadPartitions} />
 						{/each}
 					</div>
 				{:else}
@@ -275,7 +281,7 @@
 							<div>
 								<button
 									class="flex items-center justify-between w-full text-left text-lg font-medium text-gray-900 mb-4 hover:text-indigo-600"
-									on:click={() => {
+									onclick={() => {
 										const key = 'mp' in group ? group.mp : group.name;
 										if (collapsedGroups.has(key)) {
 											collapsedGroups.delete(key);
@@ -297,7 +303,7 @@
 								{#if !collapsedGroups.has('mp' in group ? group.mp : group.name)}
 									<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 										{#each (group.items || []) as partition}
-											<PartitionCard {partition} onClick={handleLoadPartition} on:deleted={loadPartitions} />
+											<PartitionCard {partition} onClick={handleLoadPartition} deleted={loadPartitions} />
 										{/each}
 									</div>
 								{/if}

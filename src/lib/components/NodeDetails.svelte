@@ -49,12 +49,12 @@
                         <span>{target.resolveInfo}</span>
                       {/if}
 											{#if target.reference}
-                        <span
+                        <button
 													class="reference-link"
-													on:click={() => handleNodeClick(target.reference)}
+													onclick={(ev) => { handleNodeClick(target.reference); ev.stopPropagation()}}
 												>
                           ({target.reference})
-                        </span>
+                        </button>
                       {/if}
                     </div>
 									{/each}

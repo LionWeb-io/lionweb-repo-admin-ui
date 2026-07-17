@@ -15,7 +15,7 @@
 	let showDeleteConfirm = $state(false);
 	let repositoryToDelete: RepositoryConfiguration | null = $state(null);
 	let createError: string | null = $state(null);
-	let dragActiveRepository: string | null = null;
+	let dragActiveRepository: string | null = $state(null);
 	let showDownloadProgress = $state(false);
 	let downloadProgress = $state({ current: 0, total: 0 });
 	let showUploadProgress = $state(false);
@@ -302,11 +302,12 @@
 				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					{#each repositories as repository}
 						<div
+							role="region"
 							class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow relative {dragActiveRepository === repository.name ? 'ring-2 ring-indigo-500' : ''}"
-							on:dragenter={(e) => handleDragEnter(e, repository.name)}
-							on:dragleave={(e) => handleDragLeave(e, repository.name)}
-							on:dragover={handleDragOver}
-							on:drop={(e) => handleDrop(e, repository.name)}
+							ondragenter={(e) => handleDragEnter(e, repository.name)}
+							ondragleave={(e) => handleDragLeave(e, repository.name)}
+							ondragover={handleDragOver}
+							ondrop={(e) => handleDrop(e, repository.name)}
 						>
 							<!-- Drag overlay -->
 							{#if dragActiveRepository === repository.name}
@@ -352,7 +353,7 @@
 
 								<div class="flex justify-end space-x-2">
 									<button
-										on:click={() => handleDownload(repository.name)}
+										onclick={() => handleDownload(repository.name)}
 										class="inline-flex items-center rounded-full border border-transparent p-2 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
 										title="Download Repository"
 									>
@@ -388,7 +389,7 @@
 										<span class="sr-only">Explore</span>
 									</a>
 									<button
-										on:click={() => {
+										onclick={() => {
 											repositoryToDelete = repository;
 											showDeleteConfirm = true;
 										}}
@@ -418,7 +419,7 @@
 
 			<div class="mt-6 flex justify-center">
 				<button
-					on:click={() => (showCreateModal = true)}
+					onclick={() => (showCreateModal = true)}
 					class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
 				>
 					<svg

@@ -83,4 +83,4 @@
     }
 </script>
 
-<div class="monaco-editor" bind:this={editorContainer} style="height: {height};" /> 
+<div class="monaco-editor" bind:this={editorContainer} style="height: {height};" ></div> 

@@ -6,8 +6,8 @@
 </script>
 
 <div class="meta-pointer ">
-	<details name="exclusive" class="text-nowrap rounded-full bg-blue-100" on:toggle={(ev) => {console.log("!!!"); ev.preventDefault(); ev.stopPropagation()}}>
-		<summary on:toggle={(ev) => {console.log("!!!"); ev.preventDefault(); ev.stopPropagation()}}>
+	<details name="exclusive" class="text-nowrap rounded-full bg-blue-100" ontoggle={(ev) => {ev.preventDefault(); ev.stopPropagation()}}>
+		<summary ontoggle={(ev) => { ev.preventDefault(); ev.stopPropagation()}}>
 			<span class="key text-xs font-medium text-blue-800">{key}</span>
 		</summary>
 		<LanguageUI {language} {version} />
@@ -30,16 +30,13 @@
       overflow: hidden;
   }
 
-  details:first-of-type {
-      /*border-top: solid #ADADAD 2px;*/
-  }
+  /*details:first-of-type {*/
+  /*    !*border-top: solid #ADADAD 2px;*!*/
+  /*}*/
 
   details[open] {
-      /*background-color: #eee;*/
-			corner-shape: round;
       border: solid #ADADAD 2px;
 			border-radius: 8px;
-      /*border-left: 3px solid #0000CD;*/
   }
 
   summary {
@@ -53,7 +50,6 @@
   }
 
   summary::after {
-      /*background: url('data:images/arrow.svg') no-repeat;*/
 			content: '';
       border: solid #0000CD;
       border-width: 0 3px 3px 0;
@@ -71,8 +67,5 @@
       display: none;
   }
 
-  p {
-      padding: 5px 20px;
-  }
 	
 </style>

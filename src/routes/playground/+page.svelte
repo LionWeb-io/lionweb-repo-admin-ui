@@ -147,7 +147,7 @@ output_div.appendChild(img)`;
 				<div class="flex items-center gap-4">
 					<button 
 						class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:scale-105" 
-						on:click={runCode}
+						onclick={runCode}
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
 							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
@@ -179,6 +179,7 @@ output_div.appendChild(img)`;
 									language="python"
 									theme="vs-dark"
 									height="100%"
+									readOnly={false}
 									onChange={handleCodeChange}
 								/>
 							</div>

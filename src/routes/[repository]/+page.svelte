@@ -3,19 +3,12 @@
 	import { page } from '$app/state';
 	import {
 		listPartitionsIDs,
-		createPartition,
-		deletePartition,
-		loadPartition,
-		loadPartitionNames,
-		getRepositories
+		loadPartitionNames
 	} from '$lib/services/repository';
-	import NodeTree from '$lib/components/NodeTree.svelte';
-	import LanguageUI from '$lib/components/LanguageUI.svelte';
 	import type { LionWebJsonChunk } from '@lionweb/server-client';
-	import type { RepositoryConfiguration } from '@lionweb/server-shared';
 	import { goto } from '$app/navigation';
 
-	let repositoryName = $state(page.params.repository);
+	let repositoryName = $derived(page.params.repository);
 	let partitions: Array<{ id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk }> = $state([]);
 	let loading = $state(false);
 	let error: string | null = $state(null);
@@ -99,9 +92,12 @@
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 					Partitions found:
 					{#each partitions.sort((a, b) => a.id.localeCompare(b.id)) as partition}
+						<!-- svelte-ignore <a11y_click_events_have_key_events> -->
+						<!-- svelte-ignore <a11y_no_noninteractive_element_interactions> -->
 						<div 
+							role="insertion"
 							class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow hover:shadow-md transition-shadow duration-200 cursor-pointer"
-							on:click={() => handleLoadPartition(partition)}
+							onclick={() => handleLoadPartition(partition)}
 						>
 							<div class="px-6 py-4">
 								<div class="flex flex-col">

@@ -8,6 +8,8 @@
 	import { ChevronRightIcon, ChevronsRightIcon } from "@lucide/svelte"
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
 
+	let { children } = $props();
+	
 	let isLargePage = $state(Boolean(page.params.repository && page.params.id) || page.url.pathname === '/playground');
 </script>
 
@@ -73,7 +75,7 @@
 
 	<main class={isLargePage ? 'w-full px-2 bg-amber-200' : 'py-6 sm:px-6 lg:px-8 bg-blue-200'}>
 		<div class={isLargePage ? 'max-w-screen-3xl mx-auto' : 'mx-auto max-w-7xl px-4 py-6 sm:px-0'}>
-			<slot/>
+			{@render children?.()}
 		</div>
 	</main>
 </div>

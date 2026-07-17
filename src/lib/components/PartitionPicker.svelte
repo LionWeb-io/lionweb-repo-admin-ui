@@ -7,7 +7,7 @@
 	let partitions: Array<{ id: string; name?: string }> = [];
 	let isOpen = $state(false);
 	let selected: { id: string; name?: string } | null = $state(null);
-	let searchQuery = '';
+	let searchQuery = $state('');
 
 	onMount(async () => {
 		try {
@@ -57,7 +57,10 @@
 </script>
 
 <div class="custom-select">
-	<div class="selected" on:click={toggleDropdown}>
+	<!-- svelte-ignore <a11y_click_events_have_key_events> -->
+	<!-- svelte-ignore <a11y_no_noninteractive_element_interactions> -->
+	<!-- svelte-ignore <a11y_no_static_element_interactions> -->
+	<div class="selected" onclick={toggleDropdown}>
 		<div class="option-row">
 			{#if selected}
 				<span class="option-title">{selected.name || selected.id}</span>
@@ -79,7 +82,10 @@
 		</div>
 		<ul class="options">
 			{#each filteredPartitions as partition}
-				<li class="option-row" on:click={() => selectOption(partition)}>
+				<!-- svelte-ignore <a11y_click_events_have_key_events> -->
+				<!-- svelte-ignore <a11y_no_noninteractive_element_interactions> -->
+				<!-- svelte-ignore <a11y_no_static_element_interactions> -->
+				<li class="option-row" onclick={() => selectOption(partition)}>
 					<span class="option-title">{partition.name || partition.id}</span>
 				</li>
 			{/each}

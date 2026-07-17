@@ -28,12 +28,16 @@
 	function selectOption(option: RepositoryConfiguration) {
 		selected = option;
 		isOpen = false;
+		console.log(`goto ${option.name}`)
 		goto(`/repository/${option.name}`);
 	}
 </script>
 
 <div class="custom-select">
-	<div class="selected" on:click={toggleDropdown}>
+	<!-- svelte-ignore <a11y_click_events_have_key_events> -->
+	<!-- svelte-ignore <a11y_no_noninteractive_element_interactions> -->
+	<!-- svelte-ignore <a11y_no_static_element_interactions> -->
+	<div class="selected" onclick={toggleDropdown}>
 		<div class="option-row">
 			{#if selected}
 				<span class="option-title">{selected.name}</span>
@@ -49,7 +53,9 @@
 	{#if isOpen}
 		<ul class="options">
 			{#each repositories as option}
-				<li class="option-row" on:click={() => selectOption(option)}>
+				<!-- svelte-ignore <a11y_click_events_have_key_events> -->
+				<!-- svelte-ignore <a11y_no_noninteractive_element_interactions> -->
+				<li class="option-row" onclick={() => selectOption(option)}>
 					<span class="option-title">{option.name}</span>
 					<span class="badge version">{option.lionweb_version}</span>
 					<span class="badge history">{option.history ? 'History enabled' : 'No history'}</span>

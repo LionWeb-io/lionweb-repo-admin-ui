@@ -5,11 +5,11 @@
 	let { show, onClose, onCreate }: CreateRepositoryProps = $props()
 
 	let createError: string | null = $state(null);
-	let newRepository: RepositoryConfiguration = {
+	let newRepository: RepositoryConfiguration = $state({
 		name: '',
 		lionweb_version: '2024.1',
 		history: false
-	};
+	});
 
 	async function handleCreateRepository() {
 		try {
@@ -63,7 +63,7 @@
 						Create New Repository
 					</h3>
 					<div class="mt-4">
-						<form on:submit|preventDefault={handleCreateRepository}>
+						<form onsubmit={ (ev) => {handleCreateRepository(); ev.preventDefault()}}>
 							{#if createError}
 								<div class="mb-4 border-l-4 border-red-400 bg-red-50 p-4">
 									<div class="flex">
@@ -128,7 +128,7 @@
 								</button>
 								<button
 									type="button"
-									on:click={onClose}
+									onclick={onClose}
 									class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none sm:col-start-1 sm:mt-0 sm:text-sm"
 								>
 									Cancel

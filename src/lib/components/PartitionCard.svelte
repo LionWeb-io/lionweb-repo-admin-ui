@@ -1,14 +1,11 @@
 <script lang="ts">
-    import type { PartitionCardProps, PartitionInfo } from '$lib/components/ComponentPropsTypes';
+    import type { PartitionCardProps } from '$lib/components/ComponentPropsTypes';
     import type { LionWebJsonChunk } from '@lionweb/server-client';
     import { page } from '$app/state';
     import { loadPartition, deletePartition, createPartition } from '$lib/services/repository';
-    import { createEventDispatcher } from 'svelte';
   import { Trash2Icon, DownloadIcon, EyeIcon, TriangleAlertIcon } from "@lucide/svelte"
 
-    let { partition, onClick }: PartitionCardProps = $props()
-
-    const dispatch = createEventDispatcher();
+    let { partition, onClick, deleted }: PartitionCardProps = $props()
 
     let showDeleteConfirm = $state(false);
     let loading = $state(false);
@@ -55,7 +52,7 @@
 
             await deletePartition(page.params.repository!!, partition.id);
             showDeleteConfirm = false;
-            dispatch('deleted');
+            deleted()
         } catch (e) {
             error = `Failed to delete partition: ${e instanceof Error ? e.message : 'Unknown error'}`;
             console.error('Error details:', e);
@@ -84,8 +81,6 @@
                     await createPartition(page.params.repository!!, partitionData);
                 }
             }
-
-            dispatch('partitionsCreated');
         } catch (e) {
             error = `Failed to create partitions: ${e instanceof Error ? e.message : 'Unknown error'}`;
             console.error('Error details:', e);
@@ -113,7 +108,7 @@
             </div>
             <div class="flex justify-end mt-4 gap-2">
                 <button
-                    on:click|stopPropagation={() => onClick(partition)}
+                    onclick={(ev) => { onClick(partition); ev.stopPropagation()} }
                     class="inline-flex items-center rounded-full border border-transparent p-2 text-gray-600 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
                     title="View Partition"
                 >
@@ -121,7 +116,7 @@
                     <span class="sr-only">View</span>
                 </button>
                 <button
-                    on:click|stopPropagation={handleDownload}
+                    onclick={(ev) => {handleDownload(); ev.stopPropagation()}}
                     class="inline-flex items-center rounded-full border border-transparent p-2 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
                     title="Download Partition"
                 >
@@ -129,7 +124,7 @@
                     <span class="sr-only">Download</span>
                 </button>
                 <button
-                    on:click|stopPropagation={() => showDeleteConfirm = true}
+                    onclick={(ev) => {showDeleteConfirm = true; ev.stopPropagation()}}
                     class="inline-flex items-center rounded-full border border-transparent p-2 text-red-600 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
                     title="Delete Partition"
                 >
@@ -175,14 +170,14 @@
                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
                         type="button"
-                        on:click={handleDelete}
+                        onclick={handleDelete}
                         class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                     >
                         Delete
                     </button>
                     <button
                         type="button"
-                        on:click={() => showDeleteConfirm = false}
+                        onclick={() => showDeleteConfirm = false}
                         class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
                     >
                         Cancel

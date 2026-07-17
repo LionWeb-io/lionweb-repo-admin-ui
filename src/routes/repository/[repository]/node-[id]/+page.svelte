@@ -12,7 +12,7 @@
 	let repositoryName = $state(page.params.repository);
 	let nodeId = $state(page.params.id);
 	let loading = $state(false);
-	let error: string | null = null;
+	let error: string | null = $state(null);
 	let expandedNodes = $state(new SvelteSet<string>());
 	let partitionData: LionWebJsonChunk | null = $state(null);
 	let selectedNodeId: string | null = $state(null);
@@ -35,9 +35,8 @@
 		}
 	}
 
-	function handleNodeClick(event: CustomEvent<{ nodeId: string }>) {
-		const clickedNodeId = event.detail.nodeId;
-		handleNodeSelect(clickedNodeId);
+	function handleNodeClick(nodeId: string) {
+		handleNodeSelect(nodeId);
 	}
 
 	function handleExpandAll() {
@@ -112,7 +111,7 @@
 				<button
 					type="button"
 					class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-					on:click={handleExpandAll}
+					onclick={handleExpandAll}
 					title="Expand All"
 				>
 					<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -123,7 +122,7 @@
 				<button
 					type="button"
 					class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-					on:click={handleCollapseAll}
+					onclick={handleCollapseAll}
 					title="Collapse All"
 				>
 					<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -164,7 +163,7 @@
 						<NodeTree
 							chunk={partitionData}
 							expandedNodes={expandedNodes}
-							on:nodeClick={handleNodeClick}
+							nodeClick={handleNodeClick}
 							selectedNodeId={selectedNodeId}
 						/>
 					</div>

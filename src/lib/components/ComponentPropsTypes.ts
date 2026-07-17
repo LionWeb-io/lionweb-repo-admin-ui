@@ -41,6 +41,7 @@ export type NodeTreeProps = {
 	level?: number;
 	nodeId?: string | null;
 	selectedNodeId?: string | null;
+	nodeClick?: (id: string) => void;
 };
 
 export type PartitionInfo = {
@@ -54,4 +55,5 @@ export type PartitionInfo = {
 export type PartitionCardProps = {
 	partition: PartitionInfo;
 	onClick: (partition: { id: string }) => void;
+	deleted: () => Promise<void>
 };

@@ -1,9 +1,8 @@
 <!-- NodeNavigation.svelte -->
 <script lang="ts">
 	import type { NodeNavigationProps } from '$lib/components/ComponentPropsTypes';
-	import NodeNavigation from '$lib/components/NodeNavigation.svelte';
 	import { writable } from 'svelte/store';
-	import type { LionWebJsonChunk, LionWebJsonNode } from '@lionweb/json';
+	import type { LionWebJsonNode } from '@lionweb/json';
 	import { getQualifiedNodeRepresentation, splitQualifiedName } from '$lib/utils/noderendering';
 
 	let { chunk, selectedNodeId = null, onNodeSelect }: NodeNavigationProps = $props()
@@ -68,7 +67,7 @@
 				<div class="border rounded-lg ">
 					<button
 						class="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100"
-						on:click={() => toggleLanguage(language)}
+						onclick={() => toggleLanguage(language)}
 					>
 						<h3 class="font-semibold text-lg text-gray-800">{language}</h3>
 						<span class="text-gray-500">
@@ -81,7 +80,7 @@
 								<div class="border-l-2 border-gray-200 pl-3">
 									<button
 										class="w-full flex items-center justify-between mb-2"
-										on:click={() => toggleType(language, type)}
+										onclick={() => toggleType(language, type)}
 									>
 										<h4 class="font-medium text-sm text-gray-600">{type}</h4>
 										<span class="text-gray-500">
@@ -94,7 +93,7 @@
 												{@const nodeInfo = getQualifiedNodeRepresentation(chunk.nodes, node)}
 												<button
 													class="w-full text-left px-2 py-1 rounded hover:bg-gray-100 {selectedNodeId === node.id ? 'bg-blue-50 border border-blue-200' : ''}"
-													on:click={() => handleNodeClick(node.id)}
+													onclick={() => handleNodeClick(node.id)}
 												>
 													{#if nodeInfo.isId}
 														<span class={'font-mono text-sm text-gray-600'}>{nodeInfo.text}</span>

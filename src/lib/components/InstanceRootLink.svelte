@@ -7,14 +7,10 @@
   }
 </script>
 
-<button class="bg-transparent border-0 p-0" on:click={handleClick}>
+<button class="bg-transparent border-0 p-0" onclick={handleClick}>
   <GlobeAlt class="icon cursor-pointer hover:text-indigo-600" />
 </button>
 
 <style>
-    .icon {
-        width: 24px;
-        height: 24px;
-        color: #4b5563;
-    }
+
 </style>
