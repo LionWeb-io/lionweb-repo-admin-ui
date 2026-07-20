@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getRepositories, createRepository, deleteRepository, downloadRepositoryAsZip, uploadRepositoryFromZip, getPartitionsCount } from '$lib/services/repository';
+	import { getRepositories, createRepository, deleteRepository, downloadRepositoryAsZip, uploadRepositoryFromZip, getPartitionsCount } from '$lib/services/repository.js';
 	import type { RepositoryConfiguration } from '@lionweb/server-shared';
 	import CreateRepositoryModal from '$lib/components/modals/CreateRepositoryModal.svelte';
 	import DeleteConfirmationModal from '$lib/components/modals/DeleteConfirmationModal.svelte';
 	import DownloadProgressModal from '$lib/components/modals/DownloadProgressModal.svelte';
 	import UploadProgressModal from '$lib/components/modals/UploadProgressModal.svelte';
 	import ExistingPartitionDialog from '$lib/components/modals/ExistingPartitionDialog.svelte';
+	import { DownloadIcon, EyeIcon, Trash2Icon } from '@lucide/svelte';
 
 	let repositories: RepositoryConfiguration[] = $state([]);
 	let loading = $state(true);
@@ -54,7 +55,7 @@
 			}
 		} catch (e) {
 			error = `Failed to load repositories: ${e instanceof Error ? e.message : 'Unknown error'}`;
-			console.error('Error details:', e);
+			console.error('Error details:', JSON.stringify(e));
 		} finally {
 			loading = false;
 		}
@@ -357,18 +358,7 @@
 										class="inline-flex items-center rounded-full border border-transparent p-2 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
 										title="Download Repository"
 									>
-										<svg
-											class="h-5 w-5"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												fill-rule="evenodd"
-												d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+									<DownloadIcon/>										
 										<span class="sr-only">Download</span>
 									</button>
 									<a
@@ -376,16 +366,7 @@
 										class="inline-flex items-center rounded-full border border-transparent p-2 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
 										title="Explore Repository"
 									>
-										<svg
-											class="h-5 w-5"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-											/>
-										</svg>
+										<EyeIcon/>
 										<span class="sr-only">Explore</span>
 									</a>
 									<button
@@ -396,18 +377,7 @@
 										class="inline-flex items-center rounded-full border border-transparent p-2 text-red-600 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
 										title="Delete Repository"
 									>
-										<svg
-											class="h-5 w-5"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 20 20"
-											fill="currentColor"
-										>
-											<path
-												fill-rule="evenodd"
-												d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-												clip-rule="evenodd"
-											/>
-										</svg>
+										<Trash2Icon/>
 										<span class="sr-only">Delete</span>
 									</button>
 								</div>

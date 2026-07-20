@@ -1,18 +1,20 @@
-import type {Partition} from '$lib/types';
+import type {Partition} from '$lib/types.js';
 import type {
     BulkImport,
     LionWebVersionType,
     ListRepositoriesResponse,
     RepositoryConfiguration
 } from '@lionweb/server-shared';
-import {RepositoryClient, TransferFormat} from '@lionweb/server-client';
+import {RepositoryClient, TransferFormat} from '@lionweb/server-http-client';
 import type {LionWebJsonChunk, LionWebJsonNode} from '@lionweb/json';
-import {getNodeName} from '$lib/utils/noderendering';
+import {getNodeName} from '$lib/utils/noderendering.js';
 
 const CLIENT_ID = 'lionWebRepoAdminUI';
+const hostname  = 'localhost'
+const 	port = '3005'
 
 export async function getRepositories(): Promise<ListRepositoriesResponse> {
-	const client = new RepositoryClient(CLIENT_ID, null);
+	const client = new RepositoryClient({clientId: CLIENT_ID, hostname: "localhost", port: "3005", repository: "default"});
 	const response = await client.dbAdmin.listRepositories();
 	if (response.body.success) {
 		return response.body;
@@ -25,7 +27,12 @@ export async function getRepositories(): Promise<ListRepositoriesResponse> {
 export async function createRepository(
 	repositoryConfiguration: RepositoryConfiguration
 ): Promise<void> {
-	const client = new RepositoryClient(CLIENT_ID, null);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryConfiguration.name
+	});
 	const response = await client.dbAdmin.createRepository(
 		repositoryConfiguration.name,
 		repositoryConfiguration.history,
@@ -40,7 +47,12 @@ export async function createRepository(
 }
 
 export async function deleteRepository(repositoryName: string): Promise<void> {
-	const client = new RepositoryClient(CLIENT_ID, null);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
 	const response = await client.dbAdmin.deleteRepository(repositoryName);
 	if (response.body.success) {
 		return;
@@ -51,7 +63,12 @@ export async function deleteRepository(repositoryName: string): Promise<void> {
 }
 
 export async function listPartitionsIDs(repositoryName: string): Promise<string[]> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
 	const response = await client.bulk.listPartitions();
 	if (response.body.success) {
 		return response.body.chunk.nodes.map((node) => node.id);
@@ -65,7 +82,12 @@ export async function createPartition(
 	repositoryName: string,
 	chunk: LionWebJsonChunk
 ): Promise<Partition> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
     client.timeout = 300_000;
 
 	const rootNodes = chunk.nodes.filter((node) => node.parent === null);
@@ -96,7 +118,12 @@ export async function createPartitions(
 	repositoryName: string,
 	chunks: LionWebJsonChunk[]
 ): Promise<void> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
     client.timeout = 300_000;
 
 	const bulkImport: BulkImport = {
@@ -121,7 +148,12 @@ export async function createPartitions(
 }
 
 export async function deletePartition(repositoryName: string, partitionId: string): Promise<void> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
 	const response = await client.bulk.deletePartitions([partitionId]);
 
 	if (!response.body.success) {
@@ -133,7 +165,12 @@ export async function loadPartition(
 	repositoryName: string,
 	partitionId: string
 ): Promise<LionWebJsonChunk> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
     client.timeout = 300_000;
 	const response = await client.bulk.retrieve([partitionId]);
 
@@ -150,7 +187,12 @@ export async function loadPartitionNames(
 	repositoryName: string,
 	partitionIds: string[]
 ): Promise<Map<string, string | undefined>> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
     client.timeout = 300_000;
 	const response = await client.bulk.retrieve(partitionIds, 0);
 
@@ -172,7 +214,12 @@ export async function loadShallowPartitions(
 	repositoryName: string,
 	partitionIds: string[]
 ): Promise<Map<string, LionWebJsonNode>> {
-	const client = new RepositoryClient(CLIENT_ID, repositoryName);
+	const client = new RepositoryClient({
+		clientId: CLIENT_ID,
+		hostname: 'localhost',
+		port: '3005',
+		repository: repositoryName
+	});
 	const response = await client.bulk.retrieve(partitionIds, 0);
 
 	if (!response.body.success) {

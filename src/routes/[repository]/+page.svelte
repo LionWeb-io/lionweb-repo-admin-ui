@@ -4,8 +4,8 @@
 	import {
 		listPartitionsIDs,
 		loadPartitionNames
-	} from '$lib/services/repository';
-	import type { LionWebJsonChunk } from '@lionweb/server-client';
+	} from '$lib/services/repository.js';
+	import type { LionWebJsonChunk } from '@lionweb/json';
 	import { goto } from '$app/navigation';
 
 	let repositoryName = $derived(page.params.repository);

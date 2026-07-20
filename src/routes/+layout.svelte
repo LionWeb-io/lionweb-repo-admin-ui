@@ -1,5 +1,7 @@
 <script lang="ts">
 	import '../app.css';
+	import { goto } from '$app/navigation';
+	import MenuBar from '$lib/components/MenuBar.svelte';
 	import RepositoryPicker from '$lib/components/RepositoryPicker.svelte';
 	import PartitionPicker from '$lib/components/PartitionPicker.svelte';
 	import InstanceRootLink from '$lib/components/InstanceRootLink.svelte';
@@ -11,28 +13,35 @@
 	let { children } = $props();
 	
 	let isLargePage = $state(Boolean(page.params.repository && page.params.id) || page.url.pathname === '/playground');
+
+	const navbarMenu = [
+		{
+			label: "Repositories",
+			action: () => {
+				goto("/repositories");
+			}
+		},
+		{
+			label: "Server",
+			action: async () => {
+				await goto("/server")
+			}
+		},
+		{
+			label: "Diagram",
+			action: async () => {
+				await goto("/diagram")
+			}
+		}
+	]
 </script>
 
 
 <div class="min-h-screen ">
 	
 	<nav class="bg-white shadow-lg top-0 z-30 header">
-<!--		<AppBar>-->
-<!--			<AppBar.Toolbar class="grid-cols-[auto_1fr_auto]">-->
-<!--				<AppBar.Lead>-->
-<!--					<button type="button" class="btn-icon btn-icon-lg hover:preset-tonal">MenuIcon</button>-->
-<!--				</AppBar.Lead>-->
-<!--				<AppBar.Headline>-->
-<!--					<p class="text-2xl">Skeleton</p>-->
-<!--				</AppBar.Headline>-->
-<!--				<AppBar.Trail>-->
-<!--					<button type="button" class="btn-icon hover:preset-tonal">SearchIcon</button>-->
-<!--					<button type="button" class="btn-icon hover:preset-tonal">CalendarIcon</button>-->
-<!--					<button type="button" class="btn-icon hover:preset-tonal">CircleUserIcon</button>-->
-<!--				</AppBar.Trail>-->
-<!--			</AppBar.Toolbar>-->
-<!--		</AppBar>-->
-		
+
+		<MenuBar menu={navbarMenu}/>
 		<div class="mx-auto px-6 py-4">
 			<div class="flex items-center justify-between">
 				<a href="/repositories" class="flex items-center space-x-4">
@@ -43,6 +52,7 @@
 					</div>
 				</a>
 			</div>
+
 
 			<div class="mt-6 flex items-center justify-between">
 				<div class="breadcrumbs flex items-center space-x-2 p-2">
@@ -84,7 +94,7 @@
 	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@500;700&display=swap');
 
   :root {
-      --header-height: 11.5em;
+      --header-height: 13.5em;
   }
 
 	.header {

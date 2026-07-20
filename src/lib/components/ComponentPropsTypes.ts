@@ -2,7 +2,9 @@
  * Type definitions for the properties of all Svelte components.
  */
 import type { LionWebJsonChunk, LionWebJsonMetaPointer, LionWebJsonNode } from '@lionweb/json';
+import type { Edge, Node } from '@xyflow/svelte';
 import { SvelteSet } from 'svelte/reactivity';
+import type { Client } from "../../deltaclients/clients.svelte.js";
 
 export type MetaPointerUIProps = {
 	language: string;
@@ -52,8 +54,17 @@ export type PartitionInfo = {
 	metapointer?: LionWebJsonMetaPointer;
 };
 
+export type ClientNodeProps = {
+    client: Client
+}
+
 export type PartitionCardProps = {
 	partition: PartitionInfo;
 	onClick: (partition: { id: string }) => void;
 	deleted: () => Promise<void>
 };
+
+export type DiagramProps = {
+	nodes: Node[]
+	edges: Edge[]
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Self  from "$lib/components/NodeTree.svelte"
-	import type { NodeTreeProps } from '$lib/components/ComponentPropsTypes';
+	import type { NodeTreeProps } from '$lib/components/ComponentPropsTypes.js';
 	import type {	SerializedContainment, MetaPointer } from '@lionweb/core';
 	import MetaPointerUI from '$lib/components/MetaPointerUI.svelte';
 	import NodeDetails from '$lib/components/NodeDetails.svelte';

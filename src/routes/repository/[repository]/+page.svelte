@@ -5,12 +5,11 @@
 		listPartitionsIDs,
 		loadShallowPartitions,
 		createPartition,
-	} from '$lib/services/repository';
-	import type { LionWebJsonChunk } from '@lionweb/server-client';
+	} from '$lib/services/repository.js';
+	import type { LionWebJsonChunk, LionWebJsonMetaPointer } from '@lionweb/json';
 	import { goto } from '$app/navigation';
-	import type { LionWebJsonMetaPointer } from '@lionweb/json';
 	import PartitionCard from '$lib/components/PartitionCard.svelte';
-	import { getNodeName } from '$lib/utils/noderendering';
+	import { getNodeName } from '$lib/utils/noderendering.js';
 	import { ImageUpIcon, ChevronDownIcon, ChevronUpIcon } from '@lucide/svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 
