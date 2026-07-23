@@ -1,13 +1,5 @@
-<script module>
-	class SelectedColor {
-		current = $state('#ff4000');
-	}
-	export const selectedColor = new SelectedColor();
-</script>
-
 <script lang="ts">
 	import ClientNode from '$lib/components/ClientNode.svelte';
-	import type { DiagramProps } from '$lib/components/ComponentPropsTypes.js';
 	import {
 		SvelteFlow,
 		Controls,

@@ -24,21 +24,21 @@
 				{:else}
 					<ArrowDownToLineIcon color="green" />
 				{/if}
-				{#if deltaId.count === client.getId(message)}
-					<button class="btn bg-blue-100"
-					        onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>
-						{client.getId(message)} on {client.repository}: {message.messageKind} {deltaId}
-					</button>
-				{:else}
-					<button class="btn bg-white"
-					        onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>
-						{client.getId(message)} on {client.repository}: {message.messageKind} {deltaId}
-					</button>
-				{/if}
-<!--				<button class="btn {deltaId === client.getId(message)? "bg-blue-100" : "bg-white"}" -->
-<!--								onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>-->
-<!--					{client.getId(message)} on {client.repository}: {message.messageKind}-->
-<!--				</button>-->
+				<!--{#if deltaId.count === client.getId(message)}-->
+				<!--	<button class="btn bg-blue-100"-->
+				<!--	        onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>-->
+				<!--		{client.getId(message)} on {client.repository}: {message.messageKind} {deltaId}-->
+				<!--	</button>-->
+				<!--{:else}-->
+				<!--	<button class="btn bg-white"-->
+				<!--	        onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>-->
+				<!--		{client.getId(message)} on {client.repository}: {message.messageKind} {deltaId}-->
+				<!--	</button>-->
+				<!--{/if}-->
+				<button class="btn {deltaId.count === client.getId(message)? "bg-blue-100" : "bg-white"}" 
+								onclick={ () => { console.log(`set id to ${client.getId(message)}`); setDeltaId(client.getId(message))}}>
+					{client.getId(message)} on {client.repository}: {message.messageKind}
+				</button>
 			</div>
 		{/each}
 	</div>

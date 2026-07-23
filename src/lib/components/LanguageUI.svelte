@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { LanguageUIProps } from '$lib/components/ComponentPropsTypes';
+	import type { LanguageUIProps } from '$lib/components/ComponentPropsTypes.js';
 
 	let { language, version }: LanguageUIProps = $props()
 </script>

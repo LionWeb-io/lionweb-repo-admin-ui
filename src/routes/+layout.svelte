@@ -32,6 +32,12 @@
 			action: async () => {
 				await goto("/diagram")
 			}
+		},
+		{
+			label: "TimeTable",
+			action: async () => {
+				await goto("/timetable")
+			}
 		}
 	]
 </script>
