@@ -1,23 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { loadPartition } from '$lib/services/repository';
+	import { loadPartition } from '$lib/services/repository.js';
 	import NodeTree from '$lib/components/NodeTree.svelte';
 	import LanguageUI from '$lib/components/LanguageUI.svelte';
-	import type { LionWebJsonChunk } from '@lionweb/server-client';
+	import type { LionWebJsonChunk } from '@lionweb/server-http-client';
 	import NodeNavigation from '$lib/components/NodeNavigation.svelte';
 	import { tick } from 'svelte';
   import { SvelteSet } from "svelte/reactivity"
 	
-	let repositoryName = $state(page.params.repository);
-	let nodeId = $state(page.params.id);
+	let repositoryName = $derived(page.params.repository);
+	let nodeId = $derived(page.params.id);
 	let loading = $state(false);
 	let error: string | null = $state(null);
 	let expandedNodes = $state(new SvelteSet<string>());
 	let partitionData: LionWebJsonChunk | null = $state(null);
 	let selectedNodeId: string | null = $state(null);
-
-		loadData();
 
 	async function loadData() {
 		try {
@@ -85,7 +83,11 @@
 		}
 	}
 
-	onMount(loadData);
+	// Reload partitions if node id changes
+	$effect( () => {
+		const n = nodeId
+		loadData()
+	})
 </script>
 
 <div class="flex min-h-screen bg-white">

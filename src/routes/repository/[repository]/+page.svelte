@@ -14,18 +14,16 @@
 	import { SvelteSet } from 'svelte/reactivity';
 
 	type ViewMode = 'chronological' | 'grouped' | 'alphabetical';
+	type PartitionEntry = { id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk; metapointer?: LionWebJsonMetaPointer };
+
 	let viewMode: ViewMode = $state('chronological');
 	let collapsedGroups = $state(new SvelteSet<string>());
-
 	let repositoryName = $derived(page.params.repository);
-	type PartitionEntry = { id: string; name?: string; isLoaded?: boolean; data?: LionWebJsonChunk; metapointer?: LionWebJsonMetaPointer };
 	let partitions: Array<PartitionEntry> = $state([]);
 	let loading = $state(false);
 	let error: string | null = $state(null);
 	let dragActive = $state(false);
-
-	loadPartitions();
-
+	
 	// Compute organized partitions based on view mode
 	let organizedPartitions = $derived(organizePartitions(partitions, viewMode));
 
@@ -191,10 +189,6 @@
 			loading = false;
 		}
 	}
-
-	onMount(async () => {
-		await loadPartitions();
-	});
 	
 	// Reload partitions if repo changes
 	$effect( () => {

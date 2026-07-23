@@ -2,7 +2,7 @@
 	import type { RepositoryConfiguration } from '@lionweb/server-shared';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { getRepositories } from '$lib/services/repository';
+	import { getRepositories } from '$lib/services/repository.js';
 	import { onMount } from 'svelte';
 
 	let repositories: RepositoryConfiguration[] = $state([]);

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
-	import { listPartitionsIDs, loadPartitionNames } from '$lib/services/repository';
+	import { listPartitionsIDs, loadPartitionNames } from '$lib/services/repository.js';
 	import { onMount } from 'svelte';
 
 	let partitions: Array<{ id: string; name?: string }> = [];
@@ -41,6 +41,7 @@
 	function selectOption(partition: { id: string; name?: string }) {
 		selected = partition;
 		isOpen = false;
+		console.log(`goto ${`node-${partition.id}`}`)
 		goto(`/repository/${page.params.repository}/node-${partition.id}`);
 	}
 
